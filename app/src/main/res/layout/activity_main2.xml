@@ -6,4 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity2">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ListView
+            android:id="@+id/messageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+<!--            <TextView-->
+<!--                android:id="@+id/messageBody"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="right"-->
+<!--                android:background="@drawable/common_google_signin_btn_text_light_normal_background"-->
+<!--                android:elevation="2dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="Placeholder"-->
+<!--                android:textColor="#fff"-->
+<!--                android:textSize="18dp" />-->
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="414dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/sendText"
+            android:layout_width="278dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="send"
+            android:textSize="10dp"
+            android:onClick="sendMessage" />
+
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="setting"
+            android:textSize="10dp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

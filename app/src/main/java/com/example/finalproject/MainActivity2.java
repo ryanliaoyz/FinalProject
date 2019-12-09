@@ -1,8 +1,14 @@
 package com.example.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +16,40 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import static com.android.volley.Request.Method.POST;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -82,9 +119,74 @@ public class MainActivity2 extends AppCompatActivity {
                 String temp = gtext[i-1].getText().toString();
                 gtext[i].setText(temp);
             }
-            gtext[0].setText("Hi frustrated student");
+            //Some url endpoint that you may have
+            String myUrl = "http://45.79.151.162:8080/";
+            //String to place our result in
+            String result = "I don't understand.";
+            //Instantiate new instance of our class
+            RetrieveFeedTask getRequest = new RetrieveFeedTask();
             sendText.getText().clear();
+            try {
+                result = getRequest.execute(Message).get();
+            }
+            catch (ExecutionException e) {
 
+            }
+            catch (InterruptedException e) {
+
+            }
+            gtext[0].setText(result);
+        }
+    }
+
+    private String sendWorkPostRequest(String message) {
+        try {
+            URL urlToRequest = new URL("https://45.79.151.162:8080/");
+            HttpURLConnection urlConnection =
+                    (HttpURLConnection) urlToRequest.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            urlConnection.setFixedLengthStreamingMode(
+                    message.getBytes().length);
+            System.out.println(urlConnection.toString());
+//            checkExternalStoragePermissions();
+            String something = urlConnection.getResponseMessage();
+            OutputStream i = urlConnection.getOutputStream();
+            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            out.print(message);
+            out.close();
+        }
+        catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
+
+    int REQUEST_STORAGE = 1;
+
+    private void checkExternalStoragePermissions() {
+        if (hasStoragePermissionGranted()) {
+            //You can do what whatever you want to do as permission is granted
+        } else {
+            requestExternalStoragePermission();
+        }
+    }
+
+    public boolean hasStoragePermissionGranted(){
+        return  ContextCompat.checkSelfPermission(MainActivity2.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void requestExternalStoragePermission() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            String[] itt = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(MainActivity2.this, itt,
+                    REQUEST_STORAGE);
         }
     }
 }

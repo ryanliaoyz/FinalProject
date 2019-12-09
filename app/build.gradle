@@ -4,6 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
+        manifestPlaceholders = [usesCleartextTraffic:"true"]
         applicationId "com.example.finalproject"
         minSdkVersion 16
         targetSdkVersion 29
@@ -27,5 +28,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.he5ed.lib:volley:android-cts-5.1_r4'
 }
 apply plugin: 'com.google.gms.google-services'
